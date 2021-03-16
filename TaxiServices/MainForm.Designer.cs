@@ -49,6 +49,10 @@
             this.toPassBtn = new System.Windows.Forms.Button();
             this.cityQueGried = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.paidCheckBtn = new System.Windows.Forms.Button();
+            this.saveComListWeekBtn = new System.Windows.Forms.Button();
+            this.commissionGrid = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.allOrdersPerWeekBtn = new System.Windows.Forms.Button();
             this.allSumTxtBox = new System.Windows.Forms.TextBox();
@@ -67,10 +71,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.commissionGrid = new System.Windows.Forms.DataGridView();
-            this.resetWeekBtn = new System.Windows.Forms.Button();
-            this.paidCheckBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.queDataGrid)).BeginInit();
@@ -81,10 +81,10 @@
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cityQueGried)).BeginInit();
             this.tabPage3.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.commissionGrid)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -311,6 +311,47 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Комиссия";
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.paidCheckBtn);
+            this.groupBox6.Controls.Add(this.saveComListWeekBtn);
+            this.groupBox6.Controls.Add(this.commissionGrid);
+            this.groupBox6.Location = new System.Drawing.Point(7, 132);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(758, 316);
+            this.groupBox6.TabIndex = 11;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Общий лист комиссии:";
+            // 
+            // paidCheckBtn
+            // 
+            this.paidCheckBtn.Location = new System.Drawing.Point(190, 283);
+            this.paidCheckBtn.Name = "paidCheckBtn";
+            this.paidCheckBtn.Size = new System.Drawing.Size(158, 23);
+            this.paidCheckBtn.TabIndex = 2;
+            this.paidCheckBtn.Text = "Подтвердить оплату";
+            this.paidCheckBtn.UseVisualStyleBackColor = true;
+            this.paidCheckBtn.Click += new System.EventHandler(this.paidCheckBtn_Click);
+            // 
+            // saveComListWeekBtn
+            // 
+            this.saveComListWeekBtn.Location = new System.Drawing.Point(9, 283);
+            this.saveComListWeekBtn.Name = "saveComListWeekBtn";
+            this.saveComListWeekBtn.Size = new System.Drawing.Size(175, 23);
+            this.saveComListWeekBtn.TabIndex = 1;
+            this.saveComListWeekBtn.Text = "Сохранить коммиссию";
+            this.saveComListWeekBtn.UseVisualStyleBackColor = true;
+            this.saveComListWeekBtn.Click += new System.EventHandler(this.resetWeekBtn_Click);
+            // 
+            // commissionGrid
+            // 
+            this.commissionGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.commissionGrid.Location = new System.Drawing.Point(9, 19);
+            this.commissionGrid.Name = "commissionGrid";
+            this.commissionGrid.ReadOnly = true;
+            this.commissionGrid.Size = new System.Drawing.Size(743, 258);
+            this.commissionGrid.TabIndex = 0;
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.allOrdersPerWeekBtn);
@@ -482,46 +523,6 @@
             this.tabPage4.Text = "Настройки";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.paidCheckBtn);
-            this.groupBox6.Controls.Add(this.resetWeekBtn);
-            this.groupBox6.Controls.Add(this.commissionGrid);
-            this.groupBox6.Location = new System.Drawing.Point(7, 132);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(758, 316);
-            this.groupBox6.TabIndex = 11;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Общий лист комиссии:";
-            // 
-            // commissionGrid
-            // 
-            this.commissionGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.commissionGrid.Location = new System.Drawing.Point(9, 19);
-            this.commissionGrid.Name = "commissionGrid";
-            this.commissionGrid.ReadOnly = true;
-            this.commissionGrid.Size = new System.Drawing.Size(743, 258);
-            this.commissionGrid.TabIndex = 0;
-            // 
-            // resetWeekBtn
-            // 
-            this.resetWeekBtn.Location = new System.Drawing.Point(9, 283);
-            this.resetWeekBtn.Name = "resetWeekBtn";
-            this.resetWeekBtn.Size = new System.Drawing.Size(175, 23);
-            this.resetWeekBtn.TabIndex = 1;
-            this.resetWeekBtn.Text = "Сбросить коммиссию";
-            this.resetWeekBtn.UseVisualStyleBackColor = true;
-            this.resetWeekBtn.Click += new System.EventHandler(this.resetWeekBtn_Click);
-            // 
-            // paidCheckBtn
-            // 
-            this.paidCheckBtn.Location = new System.Drawing.Point(190, 283);
-            this.paidCheckBtn.Name = "paidCheckBtn";
-            this.paidCheckBtn.Size = new System.Drawing.Size(158, 23);
-            this.paidCheckBtn.TabIndex = 2;
-            this.paidCheckBtn.Text = "Подтвердить оплату";
-            this.paidCheckBtn.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -540,12 +541,12 @@
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cityQueGried)).EndInit();
             this.tabPage3.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.commissionGrid)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.commissionGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -594,7 +595,7 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.DataGridView commissionGrid;
         private System.Windows.Forms.Button paidCheckBtn;
-        private System.Windows.Forms.Button resetWeekBtn;
+        private System.Windows.Forms.Button saveComListWeekBtn;
     }
 }
 

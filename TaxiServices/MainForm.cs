@@ -67,7 +67,7 @@ namespace TaxiServices
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Возникла непредвиденная ошибка. Номер ошибки: 0");
+                MessageBox.Show("Возникла непредвиденная ошибка");
                 throw;
             }
         }
@@ -89,7 +89,7 @@ namespace TaxiServices
                 driver.Location = "Посёлок"; //Дефолт значение
                 Db.Drivers.Add(driver);
                 Db.SaveChanges();
-                Test(driver);
+                AddDriverToCommissionList(driver);
             }
             catch (Exception exception)
             {
@@ -109,7 +109,6 @@ namespace TaxiServices
                 if (converted == false)
                     MessageBox.Show("Не удалось добавить заказ");
                 var driver = Db.Drivers.Find(id);
-                var cms = new Commission();
                 if (driver != null)
                 {
                     driver.Orders += 1;
@@ -304,24 +303,45 @@ namespace TaxiServices
             allSumTxtBox.Text = temp[1].ToString();
         }
 
-        private void Test(Driver driver)
+        private void AddDriverToCommissionList(Driver driver)
         {
-            Commission cms = new Commission();
-            cms.DriverNumber = driver.Number;
-            cms.DriverModel = driver.Model;
-            cms.PerWeek = 0;
-            cms.Paid = "Нет";
+            Commission cms = new Commission
+            {
+                DriverNumber = driver.Number, DriverModel = driver.Model, PerWeek = 0, Paid = "Нет"
+            };
             Db.Commissions.Add(cms);
-            Db.SaveChanges();
+            Db.SaveChangesAsync();
         }
+
+
+        // Сохранение старых данных о комиссии.
+        // Сохранял в JSON формате, для того, что бы было удобно отправить файл на сервер или через Телеграм
 
         private void resetWeekBtn_Click(object sender, EventArgs e)
         {
-            var list = new List<Commission>();
-            list = Db.Commissions.Local.ToList();
-            Engine.SaveOldData(list);
-            
+            var cmsList = Db.Commissions.Local.ToList();
+            Engine.SaveOldData(cmsList);
+            /*var driverList = Db.Drivers.Local.ToList();
+            Engine.ResetCommissionsAsync(driverList);
+            Db.SaveChangesAsync()*/;
 
+        }
+
+        private void paidCheckBtn_Click(object sender, EventArgs e)
+        {
+            if (commissionGrid.SelectedRows.Count > 0)
+            {
+                var index = commissionGrid.SelectedRows[0].Index;
+                var converted = int.TryParse(dataGridView1[0, index].Value.ToString(), out var id);
+                if (converted == false)
+                    MessageBox.Show("Не удалось поставить на линию");
+                var driver = Db.Drivers.Find(id);
+                var cms = Db.Commissions.Find(id);
+                driver.Orders = 0;
+                cms.PerWeek = 0;
+                Db.SaveChangesAsync();
+
+            }
         }
     }
 }

@@ -114,6 +114,20 @@ namespace TaxiServices
             return true;
         }
 
+        // Ужасно, надо переделать.
+        public static async void ResetCommissionsAsync(List<Driver> data)
+        {
+            await Task.Run(() =>
+            {
+                foreach (var driver in data.Where(driver => driver.Orders != 0))
+                {
+                    driver.Orders = 0;
+                }
+            });
+        
+        }
+
+        
         
     }
 }

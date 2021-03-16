@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using TaxiServices.Classes;
 
 namespace TaxiServices
@@ -45,8 +42,6 @@ namespace TaxiServices
             commissionGrid.Columns[2].Width = 160;
             commissionGrid.Columns[3].Width = 160;
 
-
-
             #endregion
         }
 
@@ -65,7 +60,7 @@ namespace TaxiServices
                     Db.SaveChanges();
                 }
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 MessageBox.Show("Возникла непредвиденная ошибка");
                 throw;
@@ -117,7 +112,7 @@ namespace TaxiServices
                 }
 
                 var drivercom = Db.Commissions.Find(id);
-                drivercom.PerWeek = Engine.CalcCommission(driver.Orders);
+                if (drivercom != null) drivercom.PerWeek = Engine.CalcCommission(driver.Orders);
                 Db.SaveChanges();
                 queDataGrid.DataSource = Engine.Refresh(false);
                 dataGridView1.Refresh();
@@ -305,7 +300,7 @@ namespace TaxiServices
 
         private void AddDriverToCommissionList(Driver driver)
         {
-            Commission cms = new Commission
+            var cms = new Commission
             {
                 DriverNumber = driver.Number, DriverModel = driver.Model, PerWeek = 0, Paid = "Нет"
             };
@@ -321,10 +316,7 @@ namespace TaxiServices
         {
             var cmsList = Db.Commissions.Local.ToList();
             Engine.SaveOldData(cmsList);
-            /*var driverList = Db.Drivers.Local.ToList();
-            Engine.ResetCommissionsAsync(driverList);
-            Db.SaveChangesAsync()*/;
-
+            
         }
 
         private void paidCheckBtn_Click(object sender, EventArgs e)
@@ -340,7 +332,6 @@ namespace TaxiServices
                 driver.Orders = 0;
                 cms.PerWeek = 0;
                 Db.SaveChangesAsync();
-
             }
         }
     }

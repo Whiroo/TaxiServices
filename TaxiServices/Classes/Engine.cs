@@ -14,15 +14,14 @@ using TaxiServices.Classes;
 namespace TaxiServices
 {
     /// <summary>
-    /// Основные методы
+    ///     Основные методы
     /// </summary>
-    class Engine
+    internal class Engine
     {
-        private static Queue<Driver> drivers = new Queue<Driver>();
-        private static Queue<Driver> cityDrivers = new Queue<Driver>();
-        private static MainForm frm = new MainForm();
-        private static DateTime nowTime = DateTime.Now;
-        
+        private static readonly Queue<Driver> Drivers = new Queue<Driver>();
+        private static readonly Queue<Driver> CityDrivers = new Queue<Driver>();
+        private static DateTime _nowTime = DateTime.Now;
+
 
         public static int CalcCommission(int orders)
         {
@@ -30,52 +29,47 @@ namespace TaxiServices
         }
 
         /// <summary>
-        /// Добавление в очередь
+        ///     Добавление в очередь
         /// </summary>
         /// <param name="driver">Водитель</param>
         /// <param name="city">True = Водитель в городской очереди, False = Водитель в очереди на поселке</param>
         public static void AddDriverToQueue(Driver driver, bool city)
         {
-            if(city == false)
-                drivers.Enqueue(driver);
+            if (city == false)
+                Drivers.Enqueue(driver);
             else
-            {
-                cityDrivers.Enqueue(driver);
-            }
-
+                CityDrivers.Enqueue(driver);
         }
 
         /// <summary>
-        /// Удаление с очереди
+        ///     Удаление с очереди
         /// </summary>
         /// <param name="driver">Водитель</param>
         /// <param name="city">True = Водитель в городской очереди, False = Водитель в очереди на поселке</param>
         public static void DeleteDriverFromQueue(Driver driver, bool city)
         {
-            if(city == false)
-                drivers.Dequeue();
+            if (city == false)
+                Drivers.Dequeue();
             else
-            {
-                cityDrivers.Dequeue();
-            }
+                CityDrivers.Dequeue();
         }
 
         /// <summary>
-        /// Обновление datagrida, скорее костыль
+        ///     Обновление datagrida, скорее костыль
         /// </summary>
         /// <param name="city">True = Водитель в городской очереди, False = Водитель в очереди на поселке</param>
         /// <returns></returns>
         public static List<Driver> Refresh(bool city)
         {
-            return city == false ? drivers.ToList() : cityDrivers.ToList();
+            return city == false ? Drivers.ToList() : CityDrivers.ToList();
         }
 
         public static int[] CalcAllOrderPerWeek(List<Driver> drivers)
         {
             try
             {
-                int[] temp = new int[2];
-                temp[0] =  drivers.Sum(driver => driver.Orders);
+                var temp = new int[2];
+                temp[0] = drivers.Sum(driver => driver.Orders);
                 temp[1] = CalcCommission(temp[0]);
                 return temp;
             }
@@ -88,28 +82,24 @@ namespace TaxiServices
 
         public static void SaveOldData(List<Commission> data)
         {
-            JsonSerializer json = new JsonSerializer();
-            
+            var json = new JsonSerializer();
+
             if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\old"))
-            {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\old");
-            }
             else
-            {
-                
-                using (FileStream fs = new FileStream(Directory.GetCurrentDirectory() + @"\old\" + $"{DateTime.Now.ToString("d")}", FileMode.OpenOrCreate))
+                using (var fs =
+                    new FileStream(Directory.GetCurrentDirectory() + @"\old\" + $"{DateTime.Now:d}",
+                        FileMode.OpenOrCreate))
                 {
-                    string jsondata = JsonConvert.SerializeObject(data);
-                    byte[] arrayData = Encoding.UTF8.GetBytes(jsondata);
-                    fs.Write(arrayData,0,arrayData.Length);
-
-
+                    var jsondata = JsonConvert.SerializeObject(data);
+                    var arrayData = Encoding.UTF8.GetBytes(jsondata);
+                    fs.Write(arrayData, 0, arrayData.Length);
                 }
-            }
         }
+
         public static bool WhatsTime(string time)
         {
-            if (time != nowTime.ToString("t")) return false;
+            if (time != _nowTime.ToString("t")) return false;
             MessageBox.Show("Yes");
             return true;
         }
@@ -119,15 +109,8 @@ namespace TaxiServices
         {
             await Task.Run(() =>
             {
-                foreach (var driver in data.Where(driver => driver.Orders != 0))
-                {
-                    driver.Orders = 0;
-                }
+                foreach (var driver in data.Where(driver => driver.Orders != 0)) driver.Orders = 0;
             });
-        
         }
-
-        
-        
     }
 }

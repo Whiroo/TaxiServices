@@ -477,7 +477,6 @@
             // 
             this.countOrdersTxTBox.Location = new System.Drawing.Point(126, 43);
             this.countOrdersTxTBox.Name = "countOrdersTxTBox";
-            this.countOrdersTxTBox.ReadOnly = true;
             this.countOrdersTxTBox.Size = new System.Drawing.Size(100, 20);
             this.countOrdersTxTBox.TabIndex = 6;
             // 
@@ -486,9 +485,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 48);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(114, 13);
+            this.label5.Size = new System.Drawing.Size(94, 13);
             this.label5.TabIndex = 5;
-            this.label5.Text = "Количество заказов:";
+            this.label5.Text = "Модель машины:";
             // 
             // numberDriverTxtBox
             // 
@@ -531,6 +530,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.queDataGrid)).EndInit();

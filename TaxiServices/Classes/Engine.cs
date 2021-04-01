@@ -14,7 +14,7 @@ using TaxiServices.Classes;
 namespace TaxiServices
 {
     /// <summary>
-    ///     Основные методы
+    ///  Основные методы
     /// </summary>
     internal class Engine
     {
@@ -42,7 +42,7 @@ namespace TaxiServices
         }
 
         /// <summary>
-        ///     Удаление с очереди
+        /// Удаление с очереди
         /// </summary>
         /// <param name="driver">Водитель</param>
         /// <param name="city">True = Водитель в городской очереди, False = Водитель в очереди на поселке</param>
@@ -52,6 +52,29 @@ namespace TaxiServices
                 Drivers.Dequeue();
             else
                 CityDrivers.Dequeue();
+        }
+        /// <summary>
+        /// Удаление не первого элемента очереди
+        /// </summary>
+        /// <param name="driver">Водитель</param>
+        /// <param name="city">В городе или нет</param>
+        /// <param name="notfirst">Всегда true, если хотим удалить не первого</param>
+        public static async void DeleteDriverFromQueue(Driver driver, bool city, bool notfirst)
+        {
+            if (city == false && notfirst)
+            {
+                await Task.Run(() =>
+                {
+                    var temp = Drivers.ToList();
+                    temp.Remove(driver);
+                    Drivers.Clear();
+                    foreach (var d in temp)
+                    {
+                        Drivers.Enqueue(d);
+                    }
+                });
+
+            }
         }
 
         /// <summary>
@@ -66,6 +89,7 @@ namespace TaxiServices
 
         public static int[] CalcAllOrderPerWeek(List<Driver> drivers)
         {
+            
             try
             {
                 var temp = new int[2];
@@ -80,21 +104,22 @@ namespace TaxiServices
             }
         }
 
-        public static void SaveOldData(List<Commission> data)
+        public static async void SaveOldDataAsync(List<Commission> data)
         {
-            var json = new JsonSerializer();
-
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\old"))
-                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\old");
-            else
-                using (var fs =
-                    new FileStream(Directory.GetCurrentDirectory() + @"\old\" + $"{DateTime.Now:d}",
-                        FileMode.OpenOrCreate))
-                {
-                    var jsondata = JsonConvert.SerializeObject(data);
-                    var arrayData = Encoding.UTF8.GetBytes(jsondata);
-                    fs.Write(arrayData, 0, arrayData.Length);
-                }
+            await Task.Run(() =>
+            {
+                if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\old"))
+                    Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\old");
+                else
+                    using (var fs =
+                        new FileStream(Directory.GetCurrentDirectory() + @"\old\" + $"{DateTime.Now:d}",
+                            FileMode.OpenOrCreate))
+                    {
+                        var jsondata = JsonConvert.SerializeObject(data);
+                        var arrayData = Encoding.UTF8.GetBytes(jsondata);
+                        fs.Write(arrayData, 0, arrayData.Length);
+                    }
+            });
         }
 
         public static bool WhatsTime(string time)
@@ -111,6 +136,7 @@ namespace TaxiServices
             {
                 foreach (var driver in data.Where(driver => driver.Orders != 0)) driver.Orders = 0;
             });
+            
         }
     }
 }

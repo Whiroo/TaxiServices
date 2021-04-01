@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using TaxiServices.Classes;
 
@@ -45,6 +46,80 @@ namespace TaxiServices
             #endregion
         }
 
+        // Первая вкладка, сделал для удобства самому себе
+        #region FirstTab
+        private void addDriverBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var frm = new CreateDriverFrm();
+                var result = frm.ShowDialog(this);
+                if (result == DialogResult.Cancel)
+                    return;
+                var driver = new Driver
+                {
+                    Number = int.Parse(frm.idTxtBox.Text),
+                    Model = frm.modelTxtBox.Text,
+                    Color = frm.colorTxtBox.Text,
+                    Orders = int.Parse(frm.ordersTxtBox.Text),
+                    Online = frm.comboBox1.SelectedItem.ToString(),
+                    Location = "Посёлок"
+                };
+                //Дефолт значение
+                Db.Drivers.Add(driver);
+                Db.SaveChanges();
+                AddDriverToCommissionList(driver);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+        }
+
+        private void addOnlineBtn_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                var index = dataGridView1.SelectedRows[0].Index;
+                var converted = int.TryParse(dataGridView1[0, index].Value.ToString(), out var id);
+                if (converted == false)
+                    MessageBox.Show("Не удалось добавить заказ");
+                var driver = Db.Drivers.Find(id);
+                if (driver != null && driver.Online != "Да")
+                {
+                    driver.Online = "Да";
+                    Engine.AddDriverToQueue(driver, false);
+                }
+                queDataGrid.DataSource = Engine.Refresh(false);
+
+                Db.SaveChanges();
+                dataGridView1.Refresh();
+            }
+        }
+        private void onlineCityBtn_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                var index = dataGridView1.SelectedRows[0].Index;
+                var converted = int.TryParse(dataGridView1[0, index].Value.ToString(), out var id);
+                if (converted == false)
+                    MessageBox.Show("Не удалось поставить на линию");
+                var driver = Db.Drivers.Find(id);
+                if (driver != null)
+                {
+                    driver.Online = "Да";
+                    driver.Location = "Город";
+                    Engine.AddDriverToQueue(driver, true);
+                }
+
+                Engine.Refresh(false);
+                cityQueGried.DataSource = Engine.Refresh(true);
+                Db.SaveChanges();
+                dataGridView1.Refresh();
+            }
+        }
+
         private void delDriverBtn_Click(object sender, EventArgs e)
         {
             try
@@ -67,33 +142,6 @@ namespace TaxiServices
             }
         }
 
-        private void addDriverBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var frm = new CreateDriverFrm();
-                var result = frm.ShowDialog(this);
-                if (result == DialogResult.Cancel)
-                    return;
-                var driver = new Driver();
-                driver.Number = int.Parse(frm.idTxtBox.Text);
-                driver.Model = frm.modelTxtBox.Text;
-                driver.Color = frm.colorTxtBox.Text;
-                driver.Orders = int.Parse(frm.ordersTxtBox.Text);
-                driver.Online = frm.comboBox1.SelectedItem.ToString();
-                driver.Location = "Посёлок"; //Дефолт значение
-                Db.Drivers.Add(driver);
-                Db.SaveChanges();
-                AddDriverToCommissionList(driver);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw;
-            }
-        }
-
-
         private void addOrderBtn_Click(object sender, EventArgs e)
         {
             if (queDataGrid.SelectedRows.Count > 0)
@@ -104,18 +152,64 @@ namespace TaxiServices
                 if (converted == false)
                     MessageBox.Show("Не удалось добавить заказ");
                 var driver = Db.Drivers.Find(id);
-                if (driver != null)
+                var drivercom = Db.Commissions.Find(id);
+
+                if (driver != null && queDataGrid.SelectedRows[0].Index == 0)
                 {
+                    //MessageBox.Show(queDataGrid.SelectedRows[0].Index.ToString());//queDataGrid[0, index].ToString());
                     driver.Orders += 1;
                     Engine.DeleteDriverFromQueue(driver, false); //Костыль
                     Engine.AddDriverToQueue(driver, false);
+                    drivercom.PerWeek = Engine.CalcCommission(driver.Orders);
+                    Db.SaveChanges();
+                    queDataGrid.DataSource = Engine.Refresh(false);
+                    dataGridView1.Refresh();
+                }
+                else if(driver != null)
+                {
+                    driver.Orders += 1;
+                    Engine.DeleteDriverFromQueue(driver, false, true);
+                    //Engine.DeleteDriverFromQueue(driver, false);
+                    queDataGrid.DataSource = Engine.Refresh(false);//Костыль
+                    Engine.AddDriverToQueue(driver, false);
+                    drivercom.PerWeek = Engine.CalcCommission(driver.Orders);
+                    Db.SaveChanges();
+                    queDataGrid.DataSource = Engine.Refresh(false);
+                    dataGridView1.Refresh();
+                }
+                
+
+                //var drivercom = Db.Commissions.Find(id);
+                
+                
+            }
+        }
+
+        private void orderToCityBtn_Click(object sender, EventArgs e)
+        {
+            if (queDataGrid.SelectedRows.Count > 0)
+            {
+                var index = queDataGrid.SelectedRows[0].Index;
+                var converted = int.TryParse(queDataGrid[0, index].Value.ToString(), out var id);
+                int.TryParse(queDataGrid[4, index].Value.ToString(), out _);
+                if (converted == false)
+                    MessageBox.Show("Не удалось добавить заказ");
+                //MessageBox.Show(id + order.ToString());
+                var driver = Db.Drivers.Find(id);
+                if (driver != null)
+                {
+                    driver.Orders += 1;
+                    driver.Location = "Город";
+                    Engine.DeleteDriverFromQueue(driver, false); //Костыль
+                    Engine.AddDriverToQueue(driver, true);
                 }
 
-                var drivercom = Db.Commissions.Find(id);
-                if (drivercom != null) drivercom.PerWeek = Engine.CalcCommission(driver.Orders);
                 Db.SaveChanges();
                 queDataGrid.DataSource = Engine.Refresh(false);
+                cityQueGried.DataSource = Engine.Refresh(true);
                 dataGridView1.Refresh();
+                queDataGrid.Refresh();
+                cityQueGried.Refresh();
             }
         }
 
@@ -136,28 +230,6 @@ namespace TaxiServices
             }
         }
 
-        private void addOnlineBtn_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.SelectedRows.Count > 0)
-            {
-                var index = dataGridView1.SelectedRows[0].Index;
-                var converted = int.TryParse(dataGridView1[0, index].Value.ToString(), out var id);
-                if (converted == false)
-                    MessageBox.Show("Не удалось добавить заказ");
-                var driver = Db.Drivers.Find(id);
-                if (driver != null)
-                {
-                    driver.Online = "Да";
-                    Engine.AddDriverToQueue(driver, false);
-                }
-
-                Engine.Refresh(false);
-                queDataGrid.DataSource = Engine.Refresh(false);
-                Db.SaveChanges();
-                dataGridView1.Refresh();
-            }
-        }
-
         private void createOflineBtn_Click(object sender, EventArgs e)
         {
             if (queDataGrid.SelectedRows.Count > 0)
@@ -173,49 +245,15 @@ namespace TaxiServices
                     Engine.DeleteDriverFromQueue(driver, false);
                 }
 
+
                 queDataGrid.DataSource = Engine.Refresh(false);
                 Db.SaveChanges();
                 dataGridView1.Refresh();
             }
         }
+        #endregion
 
-        private void sumCommissionBtn_Click_1(object sender, EventArgs e)
-        {
-            var numberDrivers = numberDriverTxtBox.Text;
-            var temp = int.Parse(numberDrivers);
-            var driver = Db.Drivers.First(p => p.Number == temp);
-            countOrdersTxTBox.Text = driver.Orders.ToString();
-            var sum = Engine.CalcCommission(driver.Orders).ToString();
-            commisionTxtBox.Text = sum;
-        }
-
-        private void orderToCityBtn_Click(object sender, EventArgs e)
-        {
-            if (queDataGrid.SelectedRows.Count > 0)
-            {
-                var index = queDataGrid.SelectedRows[0].Index;
-                var converted = int.TryParse(queDataGrid[0, index].Value.ToString(), out var id);
-                int.TryParse(queDataGrid[4, index].Value.ToString(), out var order);
-                if (converted == false)
-                    MessageBox.Show("Не удалось добавить заказ");
-                MessageBox.Show(id + order.ToString());
-                var driver = Db.Drivers.Find(id);
-                if (driver != null)
-                {
-                    driver.Orders += 1;
-                    driver.Location = "Город";
-                    Engine.DeleteDriverFromQueue(driver, false); //Костыль
-                    Engine.AddDriverToQueue(driver, true);
-                }
-
-                Db.SaveChanges();
-                queDataGrid.DataSource = Engine.Refresh(false);
-                cityQueGried.DataSource = Engine.Refresh(true);
-                dataGridView1.Refresh();
-                queDataGrid.Refresh();
-                cityQueGried.Refresh();
-            }
-        }
+        #region SecondTab
 
         private void toPassBtn_Click(object sender, EventArgs e)
         {
@@ -226,7 +264,7 @@ namespace TaxiServices
                 int.TryParse(cityQueGried[4, index].Value.ToString(), out var order);
                 if (converted == false)
                     MessageBox.Show("Не удалось добавить заказ");
-                MessageBox.Show(id + order.ToString());
+                //MessageBox.Show(id + order.ToString());
                 var driver = Db.Drivers.Find(id);
                 if (driver != null)
                 {
@@ -268,27 +306,19 @@ namespace TaxiServices
             }
         }
 
-        private void onlineCityBtn_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.SelectedRows.Count > 0)
-            {
-                var index = dataGridView1.SelectedRows[0].Index;
-                var converted = int.TryParse(dataGridView1[0, index].Value.ToString(), out var id);
-                if (converted == false)
-                    MessageBox.Show("Не удалось поставить на линию");
-                var driver = Db.Drivers.Find(id);
-                if (driver != null)
-                {
-                    driver.Online = "Да";
-                    driver.Location = "Город";
-                    Engine.AddDriverToQueue(driver, true);
-                }
+        #endregion
 
-                Engine.Refresh(false);
-                cityQueGried.DataSource = Engine.Refresh(true);
-                Db.SaveChanges();
-                dataGridView1.Refresh();
-            }
+        #region ThirdTab
+
+        private void sumCommissionBtn_Click_1(object sender, EventArgs e)
+        {
+            var numberDrivers = numberDriverTxtBox.Text;
+            var driverNum = int.Parse(numberDrivers);
+            var driverModel = commisionTxtBox.Text;
+            var driver = Db.Drivers.First(p => p.Number == driverNum && p.Model == driverModel);
+            countOrdersTxTBox.Text = driver.Orders.ToString();
+            var sum = Engine.CalcCommission(driver.Orders).ToString();
+            commisionTxtBox.Text = sum;
         }
 
         private void allOrdersPerWeekBtn_Click(object sender, EventArgs e)
@@ -298,25 +328,12 @@ namespace TaxiServices
             allSumTxtBox.Text = temp[1].ToString();
         }
 
-        private void AddDriverToCommissionList(Driver driver)
-        {
-            var cms = new Commission
-            {
-                DriverNumber = driver.Number, DriverModel = driver.Model, PerWeek = 0, Paid = "Нет"
-            };
-            Db.Commissions.Add(cms);
-            Db.SaveChangesAsync();
-        }
-
-
         // Сохранение старых данных о комиссии.
         // Сохранял в JSON формате, для того, что бы было удобно отправить файл на сервер или через Телеграм
-
         private void resetWeekBtn_Click(object sender, EventArgs e)
         {
             var cmsList = Db.Commissions.Local.ToList();
-            Engine.SaveOldData(cmsList);
-            
+            Engine.SaveOldDataAsync(cmsList);
         }
 
         private void paidCheckBtn_Click(object sender, EventArgs e)
@@ -331,8 +348,44 @@ namespace TaxiServices
                 var cms = Db.Commissions.Find(id);
                 driver.Orders = 0;
                 cms.PerWeek = 0;
+                cms.Paid = "Да";
                 Db.SaveChangesAsync();
+                commissionGrid.Refresh();
             }
+        }
+
+        #endregion
+
+
+        private void AddDriverToCommissionList(Driver driver)
+        {
+            var cms = new Commission
+            {
+                DriverNumber = driver.Number, DriverModel = driver.Model, PerWeek = 0, Paid = "Нет"
+            };
+            Db.Commissions.Add(cms);
+            Db.SaveChangesAsync();
+        }
+
+        
+        private  void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            foreach (var driver in Db.Drivers)
+            {
+                    driver.Online = "Нет";
+            }
+
+            Db.SaveChanges();
+           
+
+            
+
+        }
+
+        private void resetAllCmsButton_Click(object sender, EventArgs e)
+        {
+            Engine.ResetCommissionsAsync(Db.Drivers.ToList());
+            
         }
     }
 }

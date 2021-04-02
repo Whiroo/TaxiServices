@@ -72,26 +72,26 @@
     <Compile Include="Classes\Commission.cs" />
     <Compile Include="Classes\Config.cs" />
     <Compile Include="Classes\NetworkEngine.cs" />
-    <Compile Include="CreateDriverFrm.cs">
+    <Compile Include="Forms\CreateDriverFrm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreateDriverFrm.Designer.cs">
+    <Compile Include="Forms\CreateDriverFrm.Designer.cs">
       <DependentUpon>CreateDriverFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\Driver.cs" />
     <Compile Include="Classes\Engine.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CreateDriverFrm.resx">
+    <EmbeddedResource Include="Forms\CreateDriverFrm.resx">
       <DependentUpon>CreateDriverFrm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -25,7 +25,7 @@ namespace TaxiServices.Classes
         }
 
         /// <summary>
-        ///     Добавление в очередь
+        /// Добавление в очередь
         /// </summary>
         /// <param name="driver">Водитель</param>
         /// <param name="city">True = Водитель в городской очереди, False = Водитель в очереди на поселке</param>
@@ -135,5 +135,7 @@ namespace TaxiServices.Classes
             });
 
         }
+
+        
     }
 }

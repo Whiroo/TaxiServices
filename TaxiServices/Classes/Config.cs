@@ -11,7 +11,7 @@ namespace TaxiServices
     /// </summary>
     class Config
     {
-        public static readonly int Commission = 20; // Дефолтное значение
+        public static int Commission = 20; // Дефолтное значение
         
     }
 }

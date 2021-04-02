@@ -356,6 +356,18 @@ namespace TaxiServices
 
         #endregion
 
+        #region FourTab
+
+        private void saveSetCms_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(setCmsBox.Text))
+            {
+                Config.Commission = int.Parse(setCmsBox.Text);
+            }
+        }
+
+
+        #endregion
 
         private void AddDriverToCommissionList(Driver driver)
         {
@@ -387,5 +399,7 @@ namespace TaxiServices
             Engine.ResetCommissionsAsync(Db.Drivers.ToList());
             
         }
+
+        
     }
 }

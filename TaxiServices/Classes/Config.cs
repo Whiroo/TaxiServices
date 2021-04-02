@@ -11,9 +11,7 @@ namespace TaxiServices
     /// </summary>
     class Config
     {
-        public static readonly int Commission = 20;
-        //Номер моей машины
-        public static readonly int MyNumber = 0;
-        //
+        public static readonly int Commission = 20; // Дефолтное значение
+        
     }
 }

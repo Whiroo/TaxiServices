@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
 using Newtonsoft.Json;
-using TaxiServices.Classes;
 
-namespace TaxiServices
+namespace TaxiServices.Classes
 {
     /// <summary>
     ///  Основные методы
@@ -61,6 +57,7 @@ namespace TaxiServices
         /// <param name="notfirst">Всегда true, если хотим удалить не первого</param>
         public static async void DeleteDriverFromQueue(Driver driver, bool city, bool notfirst)
         {
+            // Быстрый костыль из говна и палок
             if (city == false && notfirst)
             {
                 await Task.Run(() =>
@@ -89,7 +86,7 @@ namespace TaxiServices
 
         public static int[] CalcAllOrderPerWeek(List<Driver> drivers)
         {
-            
+
             try
             {
                 var temp = new int[2];
@@ -99,7 +96,7 @@ namespace TaxiServices
             }
             catch (Exception e)
             {
-                MessageBox.Show("Не удалось посчитать количество заказов и коммиссию");
+                MessageBox.Show(@"Не удалось посчитать количество заказов и коммиссию");
                 throw;
             }
         }
@@ -108,11 +105,11 @@ namespace TaxiServices
         {
             await Task.Run(() =>
             {
-                if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\old"))
-                    Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\old");
+                if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Old"))
+                    Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Old");
                 else
                     using (var fs =
-                        new FileStream(Directory.GetCurrentDirectory() + @"\old\" + $"{DateTime.Now:d}",
+                        new FileStream(Directory.GetCurrentDirectory() + @"\Old\" + $"{DateTime.Now:d}",
                             FileMode.OpenOrCreate))
                     {
                         var jsondata = JsonConvert.SerializeObject(data);
@@ -136,7 +133,7 @@ namespace TaxiServices
             {
                 foreach (var driver in data.Where(driver => driver.Orders != 0)) driver.Orders = 0;
             });
-            
+
         }
     }
 }

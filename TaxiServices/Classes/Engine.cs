@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace TaxiServices.Classes
 {
@@ -31,10 +31,17 @@ namespace TaxiServices.Classes
         /// <param name="city">True = Водитель в городской очереди, False = Водитель в очереди на поселке</param>
         public static void AddDriverToQueue(Driver driver, bool city)
         {
-            if (city == false)
-                Drivers.Enqueue(driver);
-            else
-                CityDrivers.Enqueue(driver);
+            try
+            {
+                if (city == false)
+                    Drivers.Enqueue(driver);
+                else
+                    CityDrivers.Enqueue(driver);
+            }
+            catch (Exception e)
+            {
+                Logger.Write(e);
+            }
         }
 
         /// <summary>
@@ -58,24 +65,31 @@ namespace TaxiServices.Classes
         public static async void DeleteDriverFromQueue(Driver driver, bool city, bool notfirst)
         {
             // Быстрый костыль из говна и палок
-            if (city == false && notfirst)
+            try
             {
-                await Task.Run(() =>
+                if (city == false && notfirst)
                 {
-                    var temp = Drivers.ToList();
-                    temp.Remove(driver);
-                    Drivers.Clear();
-                    foreach (var d in temp)
+                    await Task.Run(() =>
                     {
-                        Drivers.Enqueue(d);
-                    }
-                });
+                        var temp = Drivers.ToList();
+                        temp.Remove(driver);
+                        Drivers.Clear();
+                        foreach (var d in temp)
+                        {
+                            Drivers.Enqueue(d);
+                        }
+                    });
 
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Write(e);
             }
         }
 
         /// <summary>
-        ///     Обновление datagrida, скорее костыль
+        /// Обновление datagrida, скорее костыль
         /// </summary>
         /// <param name="city">True = Водитель в городской очереди, False = Водитель в очереди на поселке</param>
         /// <returns></returns>
@@ -96,27 +110,34 @@ namespace TaxiServices.Classes
             }
             catch (Exception e)
             {
-                MessageBox.Show(@"Не удалось посчитать количество заказов и коммиссию");
+                Logger.Write(e);
                 throw;
             }
         }
 
         public static async void SaveOldDataAsync(List<Commission> data)
         {
-            await Task.Run(() =>
+            try
             {
-                if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Old"))
-                    Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Old");
-                else
-                    using (var fs =
-                        new FileStream(Directory.GetCurrentDirectory() + @"\Old\" + $"{DateTime.Now:d}",
-                            FileMode.OpenOrCreate))
-                    {
-                        var jsondata = JsonConvert.SerializeObject(data);
-                        var arrayData = Encoding.UTF8.GetBytes(jsondata);
-                        fs.Write(arrayData, 0, arrayData.Length);
-                    }
-            });
+                await Task.Run(() =>
+                {
+                    if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Old"))
+                        Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Old");
+                    else
+                        using (var fs =
+                            new FileStream(Directory.GetCurrentDirectory() + @"\Old\" + $"{DateTime.Now:d}",
+                                FileMode.OpenOrCreate))
+                        {
+                            var jsondata = JsonConvert.SerializeObject(data);
+                            var arrayData = Encoding.UTF8.GetBytes(jsondata);
+                            fs.Write(arrayData, 0, arrayData.Length);
+                        }
+                });
+            }
+            catch (Exception e)
+            {
+                Logger.Write(e);
+            }
         }
 
         public static bool WhatsTime(string time)
@@ -136,6 +157,6 @@ namespace TaxiServices.Classes
 
         }
 
-        
+
     }
 }

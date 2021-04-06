@@ -37,7 +37,7 @@ namespace TaxiServices.Classes
             }
             catch (Exception e)
             {
-                MessageBox.Show("Не удается ")
+                Logger.Write(e);
             }
         }
     }

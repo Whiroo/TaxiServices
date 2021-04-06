@@ -19,7 +19,7 @@ namespace TaxiServices
             commissionGrid.DataSource = Db.Commissions.Local.ToBindingList();
             Db.Drivers.Load();
             Db.Commissions.Load();
-
+            NetworkEngine.UploadStatisticFileAsync("01.04.2021");
             // Не знал, как правильно, сделал так
 
             #region dataGridColumnName

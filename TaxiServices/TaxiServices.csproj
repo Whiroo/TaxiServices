@@ -71,6 +71,7 @@
     <Compile Include="Classes\AppContext.cs" />
     <Compile Include="Classes\Commission.cs" />
     <Compile Include="Classes\Config.cs" />
+    <Compile Include="Classes\Logger.cs" />
     <Compile Include="Classes\NetworkEngine.cs" />
     <Compile Include="Forms\CreateDriverFrm.cs">
       <SubType>Form</SubType>

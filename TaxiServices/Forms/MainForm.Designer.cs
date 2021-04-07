@@ -78,6 +78,7 @@
             this.saveSetCms = new System.Windows.Forms.Button();
             this.setCmsBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.delFromCmsGridBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.queDataGrid)).BeginInit();
@@ -323,6 +324,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.delFromCmsGridBtn);
             this.groupBox6.Controls.Add(this.paidCheckBtn);
             this.groupBox6.Controls.Add(this.saveComListWeekBtn);
             this.groupBox6.Controls.Add(this.commissionGrid);
@@ -599,6 +601,16 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "Комиссия за заказ:";
             // 
+            // delFromCmsGridBtn
+            // 
+            this.delFromCmsGridBtn.Location = new System.Drawing.Point(354, 283);
+            this.delFromCmsGridBtn.Name = "delFromCmsGridBtn";
+            this.delFromCmsGridBtn.Size = new System.Drawing.Size(158, 23);
+            this.delFromCmsGridBtn.TabIndex = 12;
+            this.delFromCmsGridBtn.Text = "Удалить водителя";
+            this.delFromCmsGridBtn.UseVisualStyleBackColor = true;
+            this.delFromCmsGridBtn.Click += new System.EventHandler(this.delFromCmsGridBtn_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -685,6 +697,7 @@
         private System.Windows.Forms.Button saveSetCms;
         private System.Windows.Forms.TextBox setCmsBox;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button delFromCmsGridBtn;
     }
 }
 

@@ -18,9 +18,10 @@ namespace TaxiServices
             commissionGrid.DataSource = Db.Commissions.Local.ToBindingList();
             Db.Drivers.Load();
             Db.Commissions.Load();
-            NetworkEngine.UploadStatisticFileAsync("01.04.2021");
-            // Не знал, как правильно, сделал так
+            //NetworkEngine.UploadStatisticFileAsync("01.04.2021");
 
+
+            // Не знал, как правильно, сделал так
             #region dataGridColumnName
 
             dataGridView1.Columns[0].HeaderText = "ID";
@@ -143,7 +144,10 @@ namespace TaxiServices
                     if (converted == false)
                         MessageBox.Show("Не удалось выбрать водителя");
                     var driver = Db.Drivers.Find(id);
-                    Db.Drivers.Remove(driver);
+                    var cmsDriver = Db.Commissions.Find(id);
+                    Db.Commissions.Remove(cmsDriver);
+                    
+                    
                     Db.SaveChangesAsync();
                 }
             }
@@ -460,6 +464,8 @@ namespace TaxiServices
             Db.SaveChangesAsync();
         }
 
+        
+
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -481,6 +487,26 @@ namespace TaxiServices
 
         }
 
-
+        private void delFromCmsGridBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (commissionGrid.SelectedRows.Count > 0)
+                {
+                    var index = 0;
+                    var converted = int.TryParse(commissionGrid[0, index].Value.ToString(), out var id);
+                    if (converted == false)
+                        MessageBox.Show("Не удалось выбрать водителя");
+                    var cmsDriver = Db.Commissions.Find(id);
+                    Db.Commissions.Remove(cmsDriver);
+                    commissionGrid.Refresh();
+                    Db.SaveChangesAsync();
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Write(exception);
+            }
+        }
     }
 }

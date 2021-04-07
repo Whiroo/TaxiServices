@@ -166,6 +166,10 @@ namespace TaxiServices
                         MessageBox.Show("Не удалось добавить заказ");
                     var driver = Db.Drivers.Find(id);
                     var drivercom = Db.Commissions.Find(id);
+                    var driverstat = new StatisticsData();
+                    driverstat.DriverModel = driver?.Model;
+                    driverstat.DriverNumber = driver.Number;
+                    driverstat.OrdersTime = Engine.WhatsTime(false);
 
                     // Проверка на дубликаты в датагриде
                     if (driver != null && queDataGrid.SelectedRows[0].Index == 0)
@@ -178,8 +182,10 @@ namespace TaxiServices
                         Db.SaveChangesAsync();
                         queDataGrid.DataSource = Engine.Refresh(false);
                         dataGridView1.Refresh();
+                        Engine.WriteToFileWithTimeAsync(driverstat);
+                        
                     }
-                    else if (driver != null)
+                    else
                     {
                         driver.Orders += 1;
                         Engine.DeleteDriverFromQueue(driver, false, true);
@@ -190,6 +196,7 @@ namespace TaxiServices
                         Db.SaveChangesAsync();
                         queDataGrid.DataSource = Engine.Refresh(false);
                         dataGridView1.Refresh();
+                        Engine.WriteToFileWithTimeAsync(driverstat);
                     }
                 }
             }

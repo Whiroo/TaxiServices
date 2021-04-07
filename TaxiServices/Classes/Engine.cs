@@ -1,9 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,7 +20,7 @@ namespace TaxiServices.Classes
         private static readonly Queue<Driver> Drivers = new Queue<Driver>();
         private static readonly Queue<Driver> CityDrivers = new Queue<Driver>();
         private static DateTime _nowTime = DateTime.Now;
-
+        private static BlockingCollection<string> blockingCollection = new BlockingCollection<string>();
 
         public static int CalcCommission(int orders)
         {
@@ -139,12 +142,14 @@ namespace TaxiServices.Classes
                 Logger.Write(e);
             }
         }
-
-        public static bool WhatsTime(string time)
+        /// <summary>
+        /// Иключительно для удобства, вернет время на данный момент
+        /// </summary>
+        /// <param name="day">Если true, возвращает день, если false, то час</param>
+        /// <returns></returns>
+        public static string WhatsTime(bool day)
         {
-            if (time != _nowTime.ToString("t")) return false;
-            MessageBox.Show("Yes");
-            return true;
+            return _nowTime.ToString(day ? "d" : "t");
         }
 
         // Ужасно, надо переделать.
@@ -157,6 +162,35 @@ namespace TaxiServices.Classes
 
         }
 
-
+        /// <summary>
+        /// Запись статистики в JSON файл
+        /// </summary>
+        /// <param name="datatext"></param>
+        public static async void WriteToFileWithTimeAsync(StatisticsData datatext)
+        {
+            try
+            {
+                
+                await Task.Run(() =>
+                {
+                    if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Stat"))
+                        Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Stat");
+                    else
+                        using (var fs =
+                            new FileStream(Directory.GetCurrentDirectory() + @"\Stat\" + $"{DateTime.Now:d}",
+                                FileMode.Append))
+                        {
+                            var jsondata = JsonConvert.SerializeObject(datatext);
+                            var arrayData = Encoding.UTF8.GetBytes(jsondata);
+                            fs.Write(arrayData, 0, arrayData.Length);
+                        }
+                });
+            }
+            catch (Exception e)
+            {
+                Logger.Write(e);
+            }
+        }
     }
 }
+

@@ -73,6 +73,7 @@
     <Compile Include="Classes\Config.cs" />
     <Compile Include="Classes\Logger.cs" />
     <Compile Include="Classes\NetworkEngine.cs" />
+    <Compile Include="Classes\StatisticsData.cs" />
     <Compile Include="Forms\CreateDriverFrm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -22,7 +22,7 @@ namespace TaxiServices
             Db.Drivers.Load();
             Db.Commissions.Load();
             Config.IsFirstStart = false;
-            if(File.Exists(Environment.CurrentDirectory + "\\settings.xml\\"))
+            if (File.Exists(Environment.CurrentDirectory + "\\settings.xml\\"))
                 ConfigEngine.LoadSettingAsync();
             else
                 ConfigEngine.SaveSettingsAsync();
@@ -153,8 +153,8 @@ namespace TaxiServices
                     var driver = Db.Drivers.Find(id);
                     var cmsDriver = Db.Commissions.Find(id);
                     Db.Commissions.Remove(cmsDriver);
-                    
-                    
+
+
                     Db.SaveChangesAsync();
                 }
             }
@@ -194,7 +194,7 @@ namespace TaxiServices
                         queDataGrid.DataSource = Engine.Refresh(false);
                         dataGridView1.Refresh();
                         Engine.WriteToFileWithTimeAsync(driverstat);
-                        
+
                     }
                     else
                     {
@@ -540,7 +540,7 @@ namespace TaxiServices
             Db.SaveChangesAsync();
         }
 
-        
+
 
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -563,12 +563,12 @@ namespace TaxiServices
 
         }
 
-        
 
-        
 
-        
 
-       
+
+
+
+
     }
 }

@@ -71,13 +71,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.setCmsBox = new System.Windows.Forms.TextBox();
-            this.saveSetCms = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.devPassBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.devPassBox = new System.Windows.Forms.TextBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.saveSetCms = new System.Windows.Forms.Button();
+            this.setCmsBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.queDataGrid)).BeginInit();
@@ -93,8 +93,8 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -534,6 +534,33 @@
             this.tabPage4.Text = "Настройки";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.label9);
+            this.groupBox8.Controls.Add(this.devPassBox);
+            this.groupBox8.Location = new System.Drawing.Point(7, 107);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(233, 341);
+            this.groupBox8.TabIndex = 1;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Настройки разработчика:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 22);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(48, 13);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Пароль:";
+            // 
+            // devPassBox
+            // 
+            this.devPassBox.Location = new System.Drawing.Point(121, 19);
+            this.devPassBox.Name = "devPassBox";
+            this.devPassBox.Size = new System.Drawing.Size(100, 20);
+            this.devPassBox.TabIndex = 0;
+            // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.saveSetCms);
@@ -546,22 +573,6 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Настройки комиссии:";
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 25);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(109, 13);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "Комиссия за заказ:";
-            // 
-            // setCmsBox
-            // 
-            this.setCmsBox.Location = new System.Drawing.Point(121, 22);
-            this.setCmsBox.Name = "setCmsBox";
-            this.setCmsBox.Size = new System.Drawing.Size(100, 20);
-            this.setCmsBox.TabIndex = 1;
-            // 
             // saveSetCms
             // 
             this.saveSetCms.Location = new System.Drawing.Point(9, 58);
@@ -572,32 +583,21 @@
             this.saveSetCms.UseVisualStyleBackColor = true;
             this.saveSetCms.Click += new System.EventHandler(this.saveSetCms_Click);
             // 
-            // groupBox8
+            // setCmsBox
             // 
-            this.groupBox8.Controls.Add(this.label9);
-            this.groupBox8.Controls.Add(this.devPassBox);
-            this.groupBox8.Location = new System.Drawing.Point(7, 107);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(233, 341);
-            this.groupBox8.TabIndex = 1;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Настройки разработчика:";
+            this.setCmsBox.Location = new System.Drawing.Point(121, 22);
+            this.setCmsBox.Name = "setCmsBox";
+            this.setCmsBox.Size = new System.Drawing.Size(100, 20);
+            this.setCmsBox.TabIndex = 1;
             // 
-            // devPassBox
+            // label8
             // 
-            this.devPassBox.Location = new System.Drawing.Point(121, 19);
-            this.devPassBox.Name = "devPassBox";
-            this.devPassBox.Size = new System.Drawing.Size(100, 20);
-            this.devPassBox.TabIndex = 0;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 22);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(48, 13);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "Пароль:";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 25);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(109, 13);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Комиссия за заказ:";
             // 
             // MainForm
             // 
@@ -606,7 +606,7 @@
             this.ClientSize = new System.Drawing.Size(782, 483);
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Диспетчерская";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -625,10 +625,10 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPage4.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }

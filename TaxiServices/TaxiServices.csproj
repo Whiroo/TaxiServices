@@ -68,20 +68,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\AppContext.cs" />
-    <Compile Include="Classes\Commission.cs" />
-    <Compile Include="Classes\Config.cs" />
-    <Compile Include="Classes\Logger.cs" />
-    <Compile Include="Classes\NetworkEngine.cs" />
-    <Compile Include="Classes\StatisticsData.cs" />
+    <Compile Include="DataStruct\AppContext.cs" />
+    <Compile Include="DataStruct\Commission.cs" />
+    <Compile Include="Settings\Config.cs" />
+    <Compile Include="Logger\Logger.cs" />
+    <Compile Include="Engines\NetworkEngine.cs" />
+    <Compile Include="DataStruct\StatisticsData.cs" />
     <Compile Include="Forms\CreateDriverFrm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\CreateDriverFrm.Designer.cs">
       <DependentUpon>CreateDriverFrm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Classes\Driver.cs" />
-    <Compile Include="Classes\Engine.cs" />
+    <Compile Include="DataStruct\Driver.cs" />
+    <Compile Include="Engines\Engine.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +90,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\ConfigEngine.cs" />
     <EmbeddedResource Include="Forms\CreateDriverFrm.resx">
       <DependentUpon>CreateDriverFrm.cs</DependentUpon>
     </EmbeddedResource>

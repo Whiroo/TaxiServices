@@ -50,6 +50,7 @@
             this.cityQueGried = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.delFromCmsGridBtn = new System.Windows.Forms.Button();
             this.paidCheckBtn = new System.Windows.Forms.Button();
             this.saveComListWeekBtn = new System.Windows.Forms.Button();
             this.commissionGrid = new System.Windows.Forms.DataGridView();
@@ -71,14 +72,22 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.settingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.serverLabel = new System.Windows.Forms.Label();
+            this.serverAdrrTextBox = new System.Windows.Forms.TextBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.devOpenButton = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.devPassBox = new System.Windows.Forms.TextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.saveSetCms = new System.Windows.Forms.Button();
             this.setCmsBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.delFromCmsGridBtn = new System.Windows.Forms.Button();
+            this.selectUploadBox = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.userIdTextBox = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.saveSettngsBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.queDataGrid)).BeginInit();
@@ -94,6 +103,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.settingsGroupBox.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.SuspendLayout();
@@ -335,6 +345,16 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Общий лист комиссии:";
             // 
+            // delFromCmsGridBtn
+            // 
+            this.delFromCmsGridBtn.Location = new System.Drawing.Point(354, 283);
+            this.delFromCmsGridBtn.Name = "delFromCmsGridBtn";
+            this.delFromCmsGridBtn.Size = new System.Drawing.Size(158, 23);
+            this.delFromCmsGridBtn.TabIndex = 12;
+            this.delFromCmsGridBtn.Text = "Удалить водителя";
+            this.delFromCmsGridBtn.UseVisualStyleBackColor = true;
+            this.delFromCmsGridBtn.Click += new System.EventHandler(this.delFromCmsGridBtn_Click);
+            // 
             // paidCheckBtn
             // 
             this.paidCheckBtn.Location = new System.Drawing.Point(190, 283);
@@ -527,6 +547,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.settingsGroupBox);
             this.tabPage4.Controls.Add(this.groupBox8);
             this.tabPage4.Controls.Add(this.groupBox7);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
@@ -536,16 +557,60 @@
             this.tabPage4.Text = "Настройки";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // settingsGroupBox
+            // 
+            this.settingsGroupBox.Controls.Add(this.saveSettngsBtn);
+            this.settingsGroupBox.Controls.Add(this.label11);
+            this.settingsGroupBox.Controls.Add(this.userIdTextBox);
+            this.settingsGroupBox.Controls.Add(this.label10);
+            this.settingsGroupBox.Controls.Add(this.selectUploadBox);
+            this.settingsGroupBox.Controls.Add(this.serverLabel);
+            this.settingsGroupBox.Controls.Add(this.serverAdrrTextBox);
+            this.settingsGroupBox.Location = new System.Drawing.Point(7, 191);
+            this.settingsGroupBox.Name = "settingsGroupBox";
+            this.settingsGroupBox.Size = new System.Drawing.Size(233, 257);
+            this.settingsGroupBox.TabIndex = 16;
+            this.settingsGroupBox.TabStop = false;
+            this.settingsGroupBox.Text = "Панель настроек:";
+            this.settingsGroupBox.Visible = false;
+            // 
+            // serverLabel
+            // 
+            this.serverLabel.AutoSize = true;
+            this.serverLabel.Location = new System.Drawing.Point(6, 62);
+            this.serverLabel.Name = "serverLabel";
+            this.serverLabel.Size = new System.Drawing.Size(86, 13);
+            this.serverLabel.TabIndex = 15;
+            this.serverLabel.Text = "Адрес сервера:";
+            // 
+            // serverAdrrTextBox
+            // 
+            this.serverAdrrTextBox.Location = new System.Drawing.Point(9, 78);
+            this.serverAdrrTextBox.Name = "serverAdrrTextBox";
+            this.serverAdrrTextBox.Size = new System.Drawing.Size(212, 20);
+            this.serverAdrrTextBox.TabIndex = 2;
+            // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.devOpenButton);
             this.groupBox8.Controls.Add(this.label9);
             this.groupBox8.Controls.Add(this.devPassBox);
             this.groupBox8.Location = new System.Drawing.Point(7, 107);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(233, 341);
+            this.groupBox8.Size = new System.Drawing.Size(233, 78);
             this.groupBox8.TabIndex = 1;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Настройки разработчика:";
+            // 
+            // devOpenButton
+            // 
+            this.devOpenButton.Location = new System.Drawing.Point(9, 45);
+            this.devOpenButton.Name = "devOpenButton";
+            this.devOpenButton.Size = new System.Drawing.Size(212, 23);
+            this.devOpenButton.TabIndex = 13;
+            this.devOpenButton.Text = "Открыть";
+            this.devOpenButton.UseVisualStyleBackColor = true;
+            this.devOpenButton.Click += new System.EventHandler(this.devOpenButton_Click);
             // 
             // label9
             // 
@@ -601,15 +666,54 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "Комиссия за заказ:";
             // 
-            // delFromCmsGridBtn
+            // selectUploadBox
             // 
-            this.delFromCmsGridBtn.Location = new System.Drawing.Point(354, 283);
-            this.delFromCmsGridBtn.Name = "delFromCmsGridBtn";
-            this.delFromCmsGridBtn.Size = new System.Drawing.Size(158, 23);
-            this.delFromCmsGridBtn.TabIndex = 12;
-            this.delFromCmsGridBtn.Text = "Удалить водителя";
-            this.delFromCmsGridBtn.UseVisualStyleBackColor = true;
-            this.delFromCmsGridBtn.Click += new System.EventHandler(this.delFromCmsGridBtn_Click);
+            this.selectUploadBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.selectUploadBox.FormattingEnabled = true;
+            this.selectUploadBox.Items.AddRange(new object[] {
+            "Удаленный сервер",
+            "Телеграмм Бот"});
+            this.selectUploadBox.Location = new System.Drawing.Point(9, 38);
+            this.selectUploadBox.Name = "selectUploadBox";
+            this.selectUploadBox.Size = new System.Drawing.Size(151, 21);
+            this.selectUploadBox.TabIndex = 16;
+            this.selectUploadBox.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 22);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(154, 13);
+            this.label10.TabIndex = 17;
+            this.label10.Text = "Куда отправлять статистику:";
+            // 
+            // userIdTextBox
+            // 
+            this.userIdTextBox.Location = new System.Drawing.Point(9, 117);
+            this.userIdTextBox.Name = "userIdTextBox";
+            this.userIdTextBox.ReadOnly = true;
+            this.userIdTextBox.Size = new System.Drawing.Size(212, 20);
+            this.userIdTextBox.TabIndex = 18;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 101);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(164, 13);
+            this.label11.TabIndex = 19;
+            this.label11.Text = "Идентификатор пользователя:";
+            // 
+            // saveSettngsBtn
+            // 
+            this.saveSettngsBtn.Location = new System.Drawing.Point(9, 143);
+            this.saveSettngsBtn.Name = "saveSettngsBtn";
+            this.saveSettngsBtn.Size = new System.Drawing.Size(212, 23);
+            this.saveSettngsBtn.TabIndex = 20;
+            this.saveSettngsBtn.Text = "Сохранить";
+            this.saveSettngsBtn.UseVisualStyleBackColor = true;
+            this.saveSettngsBtn.Click += new System.EventHandler(this.saveSettngsBtn_Click);
             // 
             // MainForm
             // 
@@ -637,6 +741,8 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPage4.ResumeLayout(false);
+            this.settingsGroupBox.ResumeLayout(false);
+            this.settingsGroupBox.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -698,6 +804,15 @@
         private System.Windows.Forms.TextBox setCmsBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button delFromCmsGridBtn;
+        private System.Windows.Forms.Button devOpenButton;
+        private System.Windows.Forms.GroupBox settingsGroupBox;
+        private System.Windows.Forms.Label serverLabel;
+        private System.Windows.Forms.TextBox serverAdrrTextBox;
+        private System.Windows.Forms.ComboBox selectUploadBox;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox userIdTextBox;
+        private System.Windows.Forms.Button saveSettngsBtn;
     }
 }
 

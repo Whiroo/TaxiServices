@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using TaxiServices.Classes;
+using TaxiServices.Engines;
+using TaxiServices.Settings;
 
 namespace TaxiServices
 {
@@ -18,7 +21,11 @@ namespace TaxiServices
             commissionGrid.DataSource = Db.Commissions.Local.ToBindingList();
             Db.Drivers.Load();
             Db.Commissions.Load();
-            //NetworkEngine.UploadStatisticFileAsync("01.04.2021");
+            Config.IsFirstStart = false;
+            if(File.Exists(Environment.CurrentDirectory + "\\settings.xml\\"))
+                ConfigEngine.LoadSettingAsync();
+            else
+                ConfigEngine.SaveSettingsAsync();
 
 
             // Не знал, как правильно, сделал так
@@ -371,6 +378,28 @@ namespace TaxiServices
 
         #region ThirdTab
 
+        private void delFromCmsGridBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (commissionGrid.SelectedRows.Count > 0)
+                {
+                    var index = 0;
+                    var converted = int.TryParse(commissionGrid[0, index].Value.ToString(), out var id);
+                    if (converted == false)
+                        MessageBox.Show("Не удалось выбрать водителя");
+                    var cmsDriver = Db.Commissions.Find(id);
+                    Db.Commissions.Remove(cmsDriver);
+                    commissionGrid.Refresh();
+                    Db.SaveChangesAsync();
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Write(exception);
+            }
+        }
+
         private void sumCommissionBtn_Click_1(object sender, EventArgs e)
         {
             try
@@ -448,6 +477,53 @@ namespace TaxiServices
             }
         }
 
+        private void saveSettngsBtn_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(serverAdrrTextBox.Text))
+            {
+                if (Config.UseTelegram == true)
+                    Config.TelegramBotToken = serverAdrrTextBox.Text;
+                else
+                    Config.ServerURL = serverAdrrTextBox.Text;
+            }
+
+            Config.UserId = Engine.GetIDUser();
+            ConfigEngine.SaveSettingsAsync();
+
+        }
+
+        private void devOpenButton_Click(object sender, EventArgs e)
+        {
+            if (devPassBox.Text == Config.DevPassword)
+            {
+                settingsGroupBox.Visible = true;
+                userIdTextBox.Text = Engine.GetIDUser();
+            }
+            else
+            {
+                MessageBox.Show("Неверный пароль", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var labelControls = settingsGroupBox.Controls.Find("serverLabel", false);
+            var s = selectUploadBox.SelectedIndex;
+            if (s == 1)
+            {
+                labelControls[0].Text = "Токен Бота:";
+                Config.UseTelegram = true;
+                Config.UseServer = false;
+            }
+            else
+            {
+                labelControls[0].Text = "Адрес сервера:";
+                Config.UseServer = true;
+                Config.UseTelegram = false;
+            }
+        }
+
 
         #endregion
 
@@ -487,26 +563,12 @@ namespace TaxiServices
 
         }
 
-        private void delFromCmsGridBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (commissionGrid.SelectedRows.Count > 0)
-                {
-                    var index = 0;
-                    var converted = int.TryParse(commissionGrid[0, index].Value.ToString(), out var id);
-                    if (converted == false)
-                        MessageBox.Show("Не удалось выбрать водителя");
-                    var cmsDriver = Db.Commissions.Find(id);
-                    Db.Commissions.Remove(cmsDriver);
-                    commissionGrid.Refresh();
-                    Db.SaveChangesAsync();
-                }
-            }
-            catch (Exception exception)
-            {
-                Logger.Write(exception);
-            }
-        }
+        
+
+        
+
+        
+
+       
     }
 }

@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using TaxiServices.Classes;
 
-namespace TaxiServices.Classes
+namespace TaxiServices.Engines
 {
     /// <summary>
     /// Класс для работы с удаленным сервером, используется для отправки статистики по заказам и комиссиям
     /// </summary>
     class NetworkEngine
     {
-        public static async void UploadStatisticFileAsync(string createfiledata)
+
+        /// <summary>
+        /// Загружаем файл статистики на сервер
+        /// </summary>
+        public static async void UploadStatisticFileAsync()
         {
             try
             {
@@ -41,6 +41,33 @@ namespace TaxiServices.Classes
             {
                 Logger.Write(e);
             }
+        }
+
+        /// <summary>
+        /// Делаем пост запрос на проверку ключа, только при первом запуске
+        /// </summary>
+        /// <param name="key">Идентификатор пользователя</param>
+        public static async void SendKeyToServerAsync(string key)
+        {
+            //TODO
+            //Надо доделать роут апи под команду
+        }
+
+        /// <summary>
+        /// Необходимо только мне, можно вырезать
+        /// </summary>
+        public static async void CheckPaymentForMe()
+        {
+            //TODO
+            //Надо доделать роут апи под команду
+        }
+
+        /// <summary>
+        /// Отпрвляем файл с ошибками на сервер
+        /// </summary>
+        public static async void UploadLogFileAsync()
+        {
+            //TODO
         }
     }
 }

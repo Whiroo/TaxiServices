@@ -1,16 +1,14 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Concurrent;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Management;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using Newtonsoft.Json;
+using TaxiServices.Classes;
 
-namespace TaxiServices.Classes
+namespace TaxiServices.Engines
 {
     /// <summary>
     ///  Основные методы
@@ -20,7 +18,6 @@ namespace TaxiServices.Classes
         private static readonly Queue<Driver> Drivers = new Queue<Driver>();
         private static readonly Queue<Driver> CityDrivers = new Queue<Driver>();
         private static DateTime _nowTime = DateTime.Now;
-        private static BlockingCollection<string> blockingCollection = new BlockingCollection<string>();
 
         public static int CalcCommission(int orders)
         {
@@ -191,6 +188,24 @@ namespace TaxiServices.Classes
                 Logger.Write(e);
             }
         }
+
+        public static string GetIDUser()
+        {
+            Dictionary<string, string> ids;
+            ids = new Dictionary<string, string>();
+            ManagementObjectSearcher searcher;
+            searcher = new ManagementObjectSearcher("root\\CIMV2",
+                "SELECT UUID FROM Win32_ComputerSystemProduct");
+            foreach (var o in searcher.Get())
+            {
+                var queryObj = (ManagementObject) o;
+                ids.Add("UUID", queryObj["UUID"].ToString());
+            }
+
+            string id = ids.Aggregate("", (current, x) => current + x.Value);
+            return id;
+        }
+
     }
 }
 

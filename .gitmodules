@@ -1,0 +1,3 @@
+[submodule "TaxiServicesRest"]
+	path = TaxiServicesRest
+	url = https://github.com/Whiroo/TaxiServicesRest

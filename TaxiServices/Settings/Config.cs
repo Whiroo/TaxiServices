@@ -14,28 +14,28 @@ namespace TaxiServices
     {
         
         //Путь до файла с настройками
-        public static string PathToSaveSettings = Environment.CurrentDirectory + "\\settings.xml\\";
+        public  string PathToSaveSettings = Environment.CurrentDirectory + @"\Lib" + "\\settings.xml";
 
-        public static int Commission = 20; // Дефолтное значение
+        public  int Commission = 20; // Дефолтное значение
 
         // Адрес сервера, куда будем отправлять статистику
-        public static string ServerURL = "localhost:8080";
+        public  string ServerURL = "localhost:8080";
 
         // Токен Телеграмм бота, используется с/вместо api сервера
-        public static string TelegramBotToken = "";
+        public  string TelegramBotToken = "";
 
         // Пароль, для получения доступа к панели разработчика
-        public static string DevPassword = "whiroo";
+        public  string DevPassword = "whiroo";
 
         // Проверяем, куда будем отправлять данные
-        public static bool UseServer = true;
+        public bool UseServer = true;
 
         // Аналогично вышеуказанного
-        public static bool UseTelegram = false;
+        public bool UseTelegram = false;
 
-        public static bool IsFirstStart = true;
+        public bool IsFirstStart = true;
 
-        public static string UserId = "";
+        public string UserId = "";
 
 
     }

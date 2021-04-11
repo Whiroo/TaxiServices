@@ -17,11 +17,12 @@ namespace TaxiServices.Engines
     {
         private static readonly Queue<Driver> Drivers = new Queue<Driver>();
         private static readonly Queue<Driver> CityDrivers = new Queue<Driver>();
+        private static Config cfg = new Config();
         private static DateTime _nowTime = DateTime.Now;
 
         public static int CalcCommission(int orders)
         {
-            return orders * Config.Commission;
+            return orders * cfg.Commission;
         }
 
         /// <summary>

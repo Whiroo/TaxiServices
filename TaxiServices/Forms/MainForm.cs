@@ -12,20 +12,23 @@ namespace TaxiServices
     public partial class MainForm : Form
     {
         public AppContext Db;
+        ConfigEngine cfgEngine = new ConfigEngine(); 
+        Config cfg = new Config();
 
         public MainForm()
         {
             InitializeComponent();
+            cfg.UserId = Engine.GetIDUser();
             Db = new AppContext();
             dataGridView1.DataSource = Db.Drivers.Local.ToBindingList();
             commissionGrid.DataSource = Db.Commissions.Local.ToBindingList();
             Db.Drivers.Load();
             Db.Commissions.Load();
-            Config.IsFirstStart = false;
-            if (File.Exists(Environment.CurrentDirectory + "\\settings.xml\\"))
-                ConfigEngine.LoadSettingAsync();
+            cfgEngine.settings.IsFirstStart = false;
+            if (File.Exists(Environment.CurrentDirectory + cfg.PathToSaveSettings))
+                cfgEngine.LoadSettingAsync();
             else
-                ConfigEngine.SaveSettingsAsync();
+                cfgEngine.SaveSettingsAsync(cfg);
 
 
             // Не знал, как правильно, сделал так
@@ -471,30 +474,34 @@ namespace TaxiServices
 
         private void saveSetCms_Click(object sender, EventArgs e)
         {
+            var cfg = new Config();
             if (!string.IsNullOrEmpty(setCmsBox.Text))
             {
-                Config.Commission = int.Parse(setCmsBox.Text);
+                cfg.Commission = int.Parse(setCmsBox.Text);
             }
         }
 
         private void saveSettngsBtn_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(serverAdrrTextBox.Text))
+            
+            if (!string.IsNullOrEmpty(serverAdrrTextBox.Text))
             {
-                if (Config.UseTelegram == true)
-                    Config.TelegramBotToken = serverAdrrTextBox.Text;
+                
+                if (cfg.UseTelegram == true)
+                    cfg.TelegramBotToken = serverAdrrTextBox.Text;
                 else
-                    Config.ServerURL = serverAdrrTextBox.Text;
+                    cfg.ServerURL = serverAdrrTextBox.Text;
             }
 
-            Config.UserId = Engine.GetIDUser();
-            ConfigEngine.SaveSettingsAsync();
+            cfg.UserId = userIdTextBox.Text;
+            cfgEngine.SaveSettingsAsync(cfg);
 
         }
 
         private void devOpenButton_Click(object sender, EventArgs e)
         {
-            if (devPassBox.Text == Config.DevPassword)
+            
+            if (devPassBox.Text == cfg.DevPassword)
             {
                 settingsGroupBox.Visible = true;
                 userIdTextBox.Text = Engine.GetIDUser();
@@ -513,14 +520,14 @@ namespace TaxiServices
             if (s == 1)
             {
                 labelControls[0].Text = "Токен Бота:";
-                Config.UseTelegram = true;
-                Config.UseServer = false;
+                cfg.UseTelegram = true;
+                cfg.UseServer = false;
             }
             else
             {
                 labelControls[0].Text = "Адрес сервера:";
-                Config.UseServer = true;
-                Config.UseTelegram = false;
+                cfg.UseServer = true;
+                cfg.UseTelegram = false;
             }
         }
 

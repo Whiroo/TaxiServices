@@ -8,31 +8,36 @@ using System.Xml.Serialization;
 
 namespace TaxiServices.Settings
 {
-    public static class ConfigEngine
+    public class ConfigEngine
     {
-        private static Config _settings;
+        public Config settings;
+
+        public ConfigEngine()
+        {
+            settings = new Config();
+        }
 
         
-        public static async void SaveSettingsAsync()
+        public async void SaveSettingsAsync(Config cfg)
         {
             await Task.Run(() =>
             {
                 var xml = new XmlSerializer(typeof(Config));
-                var sw = new StreamWriter(Config.PathToSaveSettings);
-                xml.Serialize(sw, _settings);
+                var sw = new StreamWriter(settings.PathToSaveSettings);
+                xml.Serialize(sw, cfg);
                 sw.Close();
             });
         }
 
-        public static async void LoadSettingAsync()
+        public async void LoadSettingAsync()
         {
-            if (File.Exists(Config.PathToSaveSettings))
+            if (File.Exists(settings.PathToSaveSettings))
             {
                 await Task.Run(() =>
                 {
                     var xml = new XmlSerializer(typeof(Config));
-                    var sr = new StreamReader(Config.PathToSaveSettings);
-                    _settings = (Config) xml.Deserialize(sr);
+                    var sr = new StreamReader(settings.PathToSaveSettings);
+                    settings = (Config) xml.Deserialize(sr);
                     sr.Close();
                 });
             }
